@@ -27,7 +27,7 @@ class Home extends Component {
     }
 
     renderResponse = () => {
-        if(this.state.response != undefined) {
+        if(this.state.response !== undefined) {
             return this.state.response.map((obj, i) => {
                 return (
                     <li>
