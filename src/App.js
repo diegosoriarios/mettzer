@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 import Home from './components/Home'
+import { connect } from 'react-redux'
+import { fetchApi, loadMore } from './actions/Functions'
 
 function About() {
   return <h2>About</h2>;
@@ -11,6 +13,15 @@ function Users() {
 }
 
 class App extends Component {
+  state = {
+    pesquisa: '',
+  }
+
+  handleForm = e => {
+    e.preventDefault()
+    this.props.fetchApi(this.state.pesquisa, 1)
+  }
+
   render() {
     return (
       <Router>
@@ -41,8 +52,9 @@ class App extends Component {
                   </div>
                 </li>
               </ul>
-              <form className="form-inline my-2 my-lg-0">
-                <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+              <form className="form-inline my-2 my-lg-0" onSubmit={this.handleForm.bind(this)}>
+                <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value={this.state.pesquisa} 
+                id="pesquisa" name="pesquisa" value={this.state.pesquisa} onChange={e => this.setState({pesquisa: e.target.value})}/>
                 <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
               </form>
             </div>
@@ -57,4 +69,21 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+      isLoading: state.pageIsLoading,
+      isLogged: state.userIsLogged,
+      response: state.fetchSuccess,
+      page: state.loadMore,
+      query: state.changeString,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      fetchApi: (query, page) => dispatch(fetchApi(query, page)),
+      loadMore: (pages) => dispatch(loadMore(pages)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

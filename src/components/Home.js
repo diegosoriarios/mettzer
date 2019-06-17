@@ -7,15 +7,11 @@ import { connect } from 'react-redux'
 import { fetchApi, loadMore } from '../actions/Functions'
 
 class Home extends Component {
-    state = {
-        pesquisa: '',
-    }
-
     renderResponse = () => {
         if(this.props.response !== undefined) {
             return this.props.response.response.map((obj, i) => {
                 return (
-                    <li className="card" style={{width: '18rem'}} key={i} >
+                    <li className="card" key={i} >
                         <div className="card-body">
                             <div className="row">
                                 <h5 className="card-title col-md-9">{obj.title}</h5>
@@ -49,14 +45,10 @@ class Home extends Component {
     }
 
     render() {
-        const { pesquisa } = this.state
         if(this.props.isLogged) {
             return (
                 <div className="container">
-                    <h1>Home</h1>
-                    <label htmlFor="pesquisa">Pesquisa</label>
-                    <input type="text" id="pesquisa" name="pesquisa" value={pesquisa} onChange={e => this.setState({pesquisa: e.target.value})} />
-                    <button onClick={() => this.props.fetchApi(this.state.pesquisa, 1)}>Pesquisa</button>
+                    <h1 className="text-center">Home</h1>
                     <ul>
                         {this.renderResponse()}
                         <button onClick={() => this.handler()} className="bg-primary btn-more">+</button>

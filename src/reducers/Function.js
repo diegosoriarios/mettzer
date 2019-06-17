@@ -66,6 +66,7 @@ export function changeString(state = initialState, action) {
 }
 
 export function fetchSuccess(state = initialState, action) {
+    console.log(initialState)
     switch(action.type) {
         case FETCH_SUCCESS:
             return {
