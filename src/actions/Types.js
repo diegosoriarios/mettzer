@@ -1,1 +1,2 @@
 export const USER_IS_LOGGED = 'USER_IS_LOGGED'
+export const PAGE_IS_LOADING = 'PAGE_IS_LOADING'
