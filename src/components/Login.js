@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { userIsLogged } from '../actions/Functions'
 
 class Login extends Component {
     constructor(props){
@@ -20,6 +22,8 @@ class Login extends Component {
     handleSubmit = e => {
         console.log(this.state)
         e.preventDefault()
+        this.props.userIsLogged(true)
+        console.log(this.props.isLogged)
     }
 
     render() {
@@ -60,4 +64,17 @@ class Login extends Component {
     }
 }
 
-export default Login
+const mapStateToProps = (state) => {
+    return {
+        isLoading: state.pageIsLoading,
+        isLogged: state.userIsLogged,
+    };
+  };
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+        userIsLogged: (bool) => dispatch(userIsLogged(bool)),
+    }
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(Login);

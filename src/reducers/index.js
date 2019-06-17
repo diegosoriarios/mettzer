@@ -1,7 +1,10 @@
 import { combineReducers } from 'redux'
-import { userIsLogged, pageIsLoading } from './Function'
+import { userIsLogged, pageIsLoading, loadMore, fetchSuccess, changeString } from './Function'
 
 export default combineReducers({
     userIsLogged,
-    pageIsLoading
+    pageIsLoading,
+    loadMore,
+    fetchSuccess,
+    changeString
 })

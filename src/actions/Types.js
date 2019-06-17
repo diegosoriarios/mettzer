@@ -1,2 +1,7 @@
 export const USER_IS_LOGGED = 'USER_IS_LOGGED'
 export const PAGE_IS_LOADING = 'PAGE_IS_LOADING'
+export const FETCH_API = 'FETCH_API'
+export const FETCH_ERROR = 'FETCH_ERROR'
+export const FETCH_SUCCESS = 'FETCH_SUCCESS'
+export const LOAD_MORE = 'LOAD_MORE'
+export const CHANGE_STRING = 'CHANGE_QUERY'
