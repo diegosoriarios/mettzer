@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Login from './Login'
+import '../App.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
@@ -24,7 +25,12 @@ class Home extends Component {
                                 <h6 className="card-subtitle mb-2 text-muted" key={ind}>{name}</h6>
                             ))}
                             
-                            <p className="card-text description">{obj.description.length >= 97 ? obj.description.substring(0, 97) + '...' : obj.description}</p>
+                            <p className="card-text description">{
+                                obj.description !== null && obj.description.length >= 97 ? 
+                                    obj.description.substring(0, 97) + '...' 
+                                : 
+                                    obj.description}
+                            </p>
 
                             {obj.urls.map((link, idx) => (
                                 <a href={link} rel="noopener noreferrer" className="card-link" target="_blank" key={idx}>Link {idx + 1}</a>
@@ -36,6 +42,12 @@ class Home extends Component {
         }
     }
 
+    handler = () => {
+        this.props.loadMore()
+        console.log(this.props.query.query)
+        this.props.fetchApi(this.props.query.query, this.props.query.page + 1);
+    }
+
     render() {
         const { pesquisa } = this.state
         if(this.props.isLogged) {
@@ -44,10 +56,10 @@ class Home extends Component {
                     <h1>Home</h1>
                     <label htmlFor="pesquisa">Pesquisa</label>
                     <input type="text" id="pesquisa" name="pesquisa" value={pesquisa} onChange={e => this.setState({pesquisa: e.target.value})} />
-                    <button onClick={() => this.props.fetchApi(this.state.pesquisa)}>Pesquisa</button>
-                    <ul hidden={this.state.response === []}>
+                    <button onClick={() => this.props.fetchApi(this.state.pesquisa, 1)}>Pesquisa</button>
+                    <ul>
                         {this.renderResponse()}
-                        <button onClick={() => this.props.loadMore().then(this.props.fetchApi(this.props.query))}>+</button>
+                        <button onClick={() => this.handler()} className="bg-primary btn-more">+</button>
                     </ul>
                 </div>
             )
@@ -63,13 +75,13 @@ const mapStateToProps = (state) => {
         isLogged: state.userIsLogged,
         response: state.fetchSuccess,
         page: state.loadMore,
-        query: state.changeString
+        query: state.changeString,
     }
   }
   
   const mapDispatchToProps = (dispatch) => {
     return {
-        fetchApi: (query) => dispatch(fetchApi(query)),
+        fetchApi: (query, page) => dispatch(fetchApi(query, page)),
         loadMore: (pages) => dispatch(loadMore(pages)),
     }
   }

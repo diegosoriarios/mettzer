@@ -27,14 +27,9 @@ export function pageIsLoading(bool) {
 }
 
 export function loadMore(page) {
-    return dispatch => {
-        return new Promise((resolve, reject) => {
-            dispatch({
-                type: LOAD_MORE,
-                page: page
-            })
-            resolve()
-        })
+    return {
+        type: LOAD_MORE,
+        page: page
     }
 }
 
@@ -59,20 +54,23 @@ export function changeString(string) {
     }
 }
 
-export function fetchApi(query = initialState.query) {
+export function fetchApi(query, page) {
     return function action(dispatch) {
         dispatch({type: FETCH_API})
         dispatch(pageIsLoading(true))
-        dispatch(changeString(query))
+        if(initialState.query !== query) {
+            dispatch(fetchSuccess([]))
+        }
         
         let values = []
 
-        const request = axios.get(`https://core.ac.uk/api-v2/search/${query}?page=${initialState.page}&pageSize=10&apiKey=${API_KEY}`)
+        const request = axios.get(`https://core.ac.uk/api-v2/search/${query}?page=1&pageSize=${page}0&apiKey=${API_KEY}`)
         .then(response => {
             response.data.data.forEach(obj => {
                 values.push(obj._source)
             })
         })
+
 
         dispatch(pageIsLoading(false))
         return request.then(

@@ -1,0 +1,9 @@
+.btn-more {
+    width: 7vh;
+    height: 7vh;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    border: none;
+    margin: 0 25%;
+}
