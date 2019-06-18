@@ -58,7 +58,7 @@ class Home extends Component {
                 <div className="container">
                     <ul style={{display: this.props.response.response.length > 0 ? 'block' : 'none'}}>
                         {this.renderResponse()}
-                        <button onClick={() => this.handler()} className="bg-primary btn-more">+</button>
+                        <button onClick={() => this.handler()} className="bg-primary btn-more m-1">+</button>
                     </ul>
                 </div>
             )

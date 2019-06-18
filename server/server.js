@@ -84,6 +84,15 @@ app.put('/users/:id', (req, res) => {
     })
 })
 
+app.get('/users/:id', (req, res) => {
+    collection.findOne({ _id: new objectId(req.params.id) }, (err, result) => {
+        if(err){
+            return res.status(500).send(err)
+        }
+        res.send(result)
+    })
+})
+
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)
     mongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {
