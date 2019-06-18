@@ -5,8 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
 import { fetchApi, loadMore } from '../actions/Functions'
+import axios from 'axios'
+
+const URL = 'http://localhost:3777'
 
 class Home extends Component {
+    savePost = obj => {
+        console.log(obj)
+        axios.post(`${URL}/`, obj)
+    }
+
     renderResponse = () => {
         if(this.props.response !== undefined) {
             return this.props.response.response.map((obj, i) => {
@@ -15,7 +23,7 @@ class Home extends Component {
                         <div className="card-body">
                             <div className="row">
                                 <h5 className="card-title col-md-9">{obj.title}</h5>
-                                <FontAwesomeIcon className="col-md-3" size="2x" icon={faHeart} />
+                                <FontAwesomeIcon className="col-md-3" size="2x" icon={faHeart} onClick={() => this.savePost(obj)} />
                             </div>
                             {obj.authors.map((name, ind) => (
                                 <h6 className="card-subtitle mb-2 text-muted" key={ind}>{name}</h6>
@@ -45,7 +53,7 @@ class Home extends Component {
     }
 
     render() {
-        if(this.props.isLogged) {
+        if(this.props.isLogged.isLogged) {
             return (
                 <div className="container">
                     <h1 className="text-center">Home</h1>
