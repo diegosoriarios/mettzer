@@ -4,17 +4,21 @@ import {
     LOAD_MORE,
     FETCH_SUCCESS,
     FETCH_ERROR,
-    CHANGE_STRING
+    CHANGE_STRING,
+    SAVE_USER,
+    CREATE_ACCOUNT
 } from '../actions/Types'
 
 export const initialState = {
     isLogged: false,
     isLoading: false,
+    signin: false,
     pesquisa: '',
     response: [],
     page: 1,
     query: '',
-    error: ''
+    error: '',
+    user: {}
 }
 
 export function userIsLogged(state = initialState, action) {
@@ -65,12 +69,36 @@ export function changeString(state = initialState, action) {
     }
 }
 
+export function saveUser(state = initialState, action) {
+    switch(action.type) {
+        case SAVE_USER:
+            return {
+                ...state,
+                user: action.user
+            }
+        default:
+            return state
+    }
+}
+
 export function fetchSuccess(state = initialState, action) {
     switch(action.type) {
         case FETCH_SUCCESS:
             return {
                 ...state,
                 response: action.response
+            }
+        default:
+            return state
+    }
+}
+
+export function createAccount(state = initialState, action) {
+    switch(action.type) {
+        case CREATE_ACCOUNT:
+            return {
+                ...state,
+                signin: action.createAccount
             }
         default:
             return state

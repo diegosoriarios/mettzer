@@ -5,7 +5,9 @@ import {
     LOAD_MORE,
     FETCH_SUCCESS,
     FETCH_ERROR,
-    CHANGE_STRING
+    CHANGE_STRING,
+    SAVE_USER,
+    CREATE_ACCOUNT
 } from './Types'
 import axios from 'axios'
 import { initialState } from '../reducers/Function'
@@ -51,6 +53,20 @@ export function changeString(string) {
     return {
         type: CHANGE_STRING,
         query: string
+    }
+}
+
+export function saveUser(user) {
+    return {
+        type: SAVE_USER,
+        user: user
+    }
+}
+
+export function createAccount(bool) {
+    return {
+        type: CREATE_ACCOUNT,
+        createAccount: bool
     }
 }
 

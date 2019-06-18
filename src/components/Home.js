@@ -12,7 +12,7 @@ const URL = 'http://localhost:3777'
 class Home extends Component {
     savePost = obj => {
         console.log(obj)
-        axios.post(`${URL}/`, obj)
+        axios.put(`${URL}/users/${this.props.user.user._id}`, obj)
     }
 
     renderResponse = () => {
@@ -56,8 +56,7 @@ class Home extends Component {
         if(this.props.isLogged.isLogged) {
             return (
                 <div className="container">
-                    <h1 className="text-center">Home</h1>
-                    <ul>
+                    <ul style={{display: this.props.response.response.length > 0 ? 'block' : 'none'}}>
                         {this.renderResponse()}
                         <button onClick={() => this.handler()} className="bg-primary btn-more">+</button>
                     </ul>
@@ -76,6 +75,7 @@ const mapStateToProps = (state) => {
         response: state.fetchSuccess,
         page: state.loadMore,
         query: state.changeString,
+        user: state.saveUser
     }
   }
   

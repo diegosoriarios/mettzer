@@ -1,10 +1,20 @@
 import { combineReducers } from 'redux'
-import { userIsLogged, pageIsLoading, loadMore, fetchSuccess, changeString } from './Function'
+import { 
+    userIsLogged, 
+    pageIsLoading, 
+    loadMore, 
+    fetchSuccess, 
+    changeString, 
+    saveUser, 
+    createAccount 
+} from './Function'
 
 export default combineReducers({
     userIsLogged,
     pageIsLoading,
     loadMore,
     fetchSuccess,
-    changeString
+    changeString,
+    saveUser,
+    createAccount
 })

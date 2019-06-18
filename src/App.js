@@ -1,16 +1,9 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 import Home from './components/Home'
+import Users from './components/Users'
 import { connect } from 'react-redux'
-import { fetchApi, loadMore } from './actions/Functions'
-
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
-}
+import { fetchApi, loadMore, createAccount } from './actions/Functions'
 
 class App extends Component {
   state = {
@@ -32,36 +25,30 @@ class App extends Component {
               <span className="navbar-toggler-icon"></span>
             </button>
 
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <div className={this.props.isLogged.isLogged ? "collapse navbar-collapse" : "d-none"} id="navbarSupportedContent">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item active">
                   <Link to="/" className="nav-link">Home</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/about/" className="nav-link">About</Link>
-                </li>
-                <li className="nav-item dropdown">
-                  <Link className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                  </Link>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <Link className="dropdown-item" href="#">Action</Link>
-                    <Link className="dropdown-item" href="#">Another action</Link>
-                    <div className="dropdown-divider"></div>
-                    <Link className="dropdown-item" href="#">Something else here</Link>
-                  </div>
+                  <Link to="/users/" className="nav-link">{this.props.user.user.username}</Link>
                 </li>
               </ul>
               <form className="form-inline my-2 my-lg-0" onSubmit={this.handleForm.bind(this)}>
                 <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value={this.state.pesquisa} 
                 id="pesquisa" name="pesquisa" value={this.state.pesquisa} onChange={e => this.setState({pesquisa: e.target.value})}/>
-                <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <button className="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
               </form>
+            </div>
+
+            <div className={!this.props.isLogged.isLogged ? "collapse navbar-collapse" : "d-none"} id="navbarSupportedContent">
+              <div className="text-right container-fluid">
+                <Link to="/" className="navbar-text nav-link" onClick={() => this.props.createAccount(!this.props.signin.signin) }>{this.props.signin.signin ? 'Login' : 'Criar conta'}</Link>
+              </div>
             </div>
           </nav>
 
           <Route path="/" exact component={Home} />
-          <Route path="/about/" component={About} />
           <Route path="/users/" component={Users} />
         </div>
       </Router>
@@ -76,6 +63,8 @@ const mapStateToProps = (state) => {
       response: state.fetchSuccess,
       page: state.loadMore,
       query: state.changeString,
+      signin: state.createAccount,
+      user: state.saveUser
   }
 }
 
@@ -83,6 +72,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
       fetchApi: (query, page) => dispatch(fetchApi(query, page)),
       loadMore: (pages) => dispatch(loadMore(pages)),
+      createAccount: (bool) => dispatch(createAccount(bool))
   }
 }
 

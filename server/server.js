@@ -61,12 +61,27 @@ app.post('/users', (req, res) => {
     })
 })
 
-app.post('/', (req, res) => {
+app.put('/users/:id', (req, res) => {
     console.log(req.body)
-})
-
-app.post('/:id', (req, res) => {
-
+    const body = {
+        id: req.body.id,
+        authors: req.body.authors,
+        contributors: req.body.contributors,
+        datePublished: req.body.datePublished,
+        description: req.body.description,
+        subjects: req.body.subjects,
+        title: req.body.title,
+        types: req.body.types,
+        urls: req.body.urls,
+        year: req.body.year,    
+    }
+    
+    collection.updateOne({ _id: objectId(req.params.id)}, {$push: {savedPosts: body}}, (err, result) => {
+        if(err) {
+            return res.status(500).send(err)
+        }
+        res.send(res.result)
+    })
 })
 
 app.listen(PORT, () => {
