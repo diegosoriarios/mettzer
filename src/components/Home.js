@@ -12,7 +12,14 @@ const URL = 'http://localhost:3777'
 class Home extends Component {
     savePost = obj => {
         console.log(obj)
-        axios.put(`${URL}/users/${this.props.user.user._id}`, obj)
+        let isSaved = this.props.user.user.savedPosts.some(post => {
+            return obj = post
+        })
+        if(isSaved) {
+            axios.put(`${URL}/users/${this.props.user.user._id}`, obj)
+        } else {
+            axios.put(`${URL}/users/${this.props.user.user._id}`, obj)
+        }
     }
 
     renderResponse = () => {

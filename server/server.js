@@ -84,6 +84,15 @@ app.put('/users/:id', (req, res) => {
     })
 })
 
+app.delete('/users/:id', (req, res) => {
+    collection.deleteOne({ _id: objectId(req.params.id)}, (err, result) => {
+        if (err) {
+            return res.status(500).send(err)
+        }
+        res.send(res.result)
+    })
+})
+
 app.get('/users/:id', (req, res) => {
     collection.findOne({ _id: new objectId(req.params.id) }, (err, result) => {
         if(err){
