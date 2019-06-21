@@ -24,13 +24,12 @@ class Home extends Component {
 
     changeColor = (obj) => {
         let flag = false;
-        let list = this.props.user.user.savedPosts
-        for(let i = 0; i < list.length; i++) {
-            if(list[i].id == obj.id) {
+        flag = this.props.user.user.savedPosts.find(list => {
+            if(list.id === obj.id) {
                 flag = true
                 return flag
             }
-        }
+        })
         return flag
     }
 

@@ -15,7 +15,12 @@ class Login extends Component {
     }
 
     componentDidMount = () => {
-        axios.get('http://localhost:3777/users')
+        let user = localStorage.getItem('user')
+        if(user !== null) {
+            this.props.saveUser(JSON.parse(user))
+            this.props.userIsLogged(true)
+        } else {
+            axios.get('http://localhost:3777/users')
             .then(response => {
                 return response.data
             })
@@ -25,6 +30,7 @@ class Login extends Component {
                     users: response
                 })
             })
+        }
     }
 
     handleInput = e => {
@@ -38,7 +44,8 @@ class Login extends Component {
         e.preventDefault()
         this.state.users.forEach(user => {
             if(user.username === this.state.nome || user.email === this.state.email ){
-                if(user.password === this.state.senha) {                    
+                if(user.password === this.state.senha) {
+                    localStorage.setItem('user', JSON.stringify(user))
                     this.props.saveUser(user)
                     this.props.userIsLogged(true)
                 }

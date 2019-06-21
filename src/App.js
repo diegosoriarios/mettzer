@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 import Home from './components/Home'
 import Users from './components/Users'
 import { connect } from 'react-redux'
-import { fetchApi, loadMore, createAccount } from './actions/Functions'
+import { fetchApi, loadMore, createAccount, userIsLogged } from './actions/Functions'
 
 class App extends Component {
   state = {
@@ -13,6 +13,11 @@ class App extends Component {
   handleForm = e => {
     e.preventDefault()
     this.props.fetchApi(this.state.pesquisa, 1)
+  }
+
+  logOut = () => {
+    localStorage.clear()
+    this.props.userIsLogged(false)
   }
 
   render() {
@@ -32,6 +37,9 @@ class App extends Component {
                 </li>
                 <li className="nav-item">
                   <Link to="/users/" className="nav-link">{this.props.user.user.username}</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/" className="nav-link" onClick={() => this.logOut()}>Log out</Link>
                 </li>
               </ul>
               <form className="form-inline my-2 my-lg-0" onSubmit={this.handleForm.bind(this)}>
@@ -72,7 +80,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
       fetchApi: (query, page) => dispatch(fetchApi(query, page)),
       loadMore: (pages) => dispatch(loadMore(pages)),
-      createAccount: (bool) => dispatch(createAccount(bool))
+      createAccount: (bool) => dispatch(createAccount(bool)),
+      userIsLogged: (bool) => dispatch(userIsLogged(bool))
   }
 }
 
