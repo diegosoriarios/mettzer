@@ -1,7 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const mongoose = require('mongoose')
 const mongoClient = require('mongodb').MongoClient
 const objectId = require('mongodb').ObjectID
 
@@ -12,29 +11,6 @@ const DATABASE_NAME = "mettzer"
 
 
 const app = express()
-
-const userSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        require: [true, 'Username is required']
-    },
-    email: {
-        type: String,
-        require: [true, 'Email is required']
-    },
-    password: {
-        type: String,
-        require: [true, 'Password is required']
-    },
-    saves: {
-        type: Array,
-    }
-    ,
-    createdAt: {
-        type: Date,
-        default: new Date()
-    }
-})
 
 app.use(bodyParser.json())
 app.use(cors())
@@ -84,8 +60,9 @@ app.put('/users/:id', (req, res) => {
     })
 })
 
-app.delete('/users/:id', (req, res) => {
-    collection.deleteOne({ _id: objectId(req.params.id)}, (err, result) => {
+app.delete('/users/:id/savedPosts/:post', (req, res) => {
+    console.log(req.params)
+    collection.updateOne({ _id: objectId(req.params.id)}, {$pull: { savedPosts: {id: req.params.post}}}, (err, result) => {
         if (err) {
             return res.status(500).send(err)
         }

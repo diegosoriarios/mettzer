@@ -16,10 +16,22 @@ class Home extends Component {
             return obj = post
         })
         if(isSaved) {
-            axios.put(`${URL}/users/${this.props.user.user._id}`, obj)
+            axios.delete(`${URL}/users/${this.props.user.user._id}`)
         } else {
             axios.put(`${URL}/users/${this.props.user.user._id}`, obj)
         }
+    }
+
+    changeColor = (obj) => {
+        let flag = false;
+        let list = this.props.user.user.savedPosts
+        for(let i = 0; i < list.length; i++) {
+            if(list[i].id == obj.id) {
+                flag = true
+                return flag
+            }
+        }
+        return flag
     }
 
     renderResponse = () => {
@@ -30,7 +42,7 @@ class Home extends Component {
                         <div className="card-body">
                             <div className="row">
                                 <h5 className="card-title col-md-9">{obj.title}</h5>
-                                <FontAwesomeIcon className="col-md-3" size="2x" icon={faHeart} onClick={() => this.savePost(obj)} />
+                                <FontAwesomeIcon className="col-md-3" style={{color: this.changeColor(obj) ? 'red' : 'black'}} size="2x" icon={faHeart} onClick={() => this.savePost(obj)} />
                             </div>
                             {obj.authors.map((name, ind) => (
                                 <h6 className="card-subtitle mb-2 text-muted" key={ind}>{name}</h6>

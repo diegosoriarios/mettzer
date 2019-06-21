@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchApi, loadMore } from '../actions/Functions'
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
+
+const URL = 'http://localhost:3777'
 
 class Users extends Component {
     state = {
@@ -9,7 +13,10 @@ class Users extends Component {
     }
 
     componentDidMount = () => {
-        console.log(this.props.user.user._id)
+        this.showSavedPosts()
+    }
+
+    showSavedPosts = () => {
         axios.get(`http://localhost:3777/users/${this.props.user.user._id}`)
             .then(response => {
                 return response.data
@@ -18,6 +25,13 @@ class Users extends Component {
                 this.setState({
                     response: response.savedPosts
                 })
+            })
+    }
+
+    unSavePost = obj => {
+        axios.delete(`${URL}/users/${this.props.user.user._id}/savedPosts/${obj.id}`)
+            .then(() => {
+                this.showSavedPosts()
             })
     }
 
@@ -30,6 +44,7 @@ class Users extends Component {
                         <div className="card-body">
                             <div className="row">
                                 <h5 className="card-title col-md-9">{obj.title}</h5>
+                                <FontAwesomeIcon className="col-md-3" style={{color: 'red'}} size="2x" icon={faHeart} onClick={() => this.unSavePost(obj)} />
                             </div>
                             {obj.authors.map((name, ind) => (
                                 <h6 className="card-subtitle mb-2 text-muted" key={ind}>{name}</h6>
