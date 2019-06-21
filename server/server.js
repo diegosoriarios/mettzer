@@ -3,14 +3,12 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoClient = require('mongodb').MongoClient
 const objectId = require('mongodb').ObjectID
+const app = express()
 
 const PORT = 3777
 
 const CONNECTION_URL =  'mongodb+srv://diego:diego@users-yms0u.mongodb.net/test?retryWrites=true&w=majority'
 const DATABASE_NAME = "mettzer"
-
-
-const app = express()
 
 app.use(bodyParser.json())
 app.use(cors())
@@ -18,6 +16,9 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 let database, collection
 
+/**
+ * Retorna todos os usuários cadastrados
+ */
 app.get('/users', (req, res) => {
     collection.find({}).toArray((err, result) => {
         if(err){
@@ -27,6 +28,9 @@ app.get('/users', (req, res) => {
     })
 })
 
+/**
+ * Cadastra novos usuários no banco de dados
+ */
 app.post('/users', (req, res) => {
     console.log(res)
     collection.insertOne(req.body, (err, result) => {
@@ -37,6 +41,9 @@ app.post('/users', (req, res) => {
     })
 })
 
+/**
+ * Salva um novo post na conta
+ */
 app.put('/users/:id', (req, res) => {
     console.log(req.body)
     const body = {
@@ -60,6 +67,9 @@ app.put('/users/:id', (req, res) => {
     })
 })
 
+/**
+ * Remove um post salvo da conta
+ */
 app.delete('/users/:id/savedPosts/:post', (req, res) => {
     console.log(req.params)
     collection.updateOne({ _id: objectId(req.params.id)}, {$pull: { savedPosts: {id: req.params.post}}}, (err, result) => {
@@ -70,6 +80,9 @@ app.delete('/users/:id/savedPosts/:post', (req, res) => {
     })
 })
 
+/**
+ * Retorna todos os posts de um determinado usuário
+ */
 app.get('/users/:id', (req, res) => {
     collection.findOne({ _id: new objectId(req.params.id) }, (err, result) => {
         if(err){
@@ -79,6 +92,10 @@ app.get('/users/:id', (req, res) => {
     })
 })
 
+/**
+ * Inicia o servidor
+ * Inicia a conexão com o mongoDB
+ */
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)
     mongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {

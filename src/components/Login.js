@@ -16,6 +16,11 @@ class Login extends Component {
         }
     }
 
+    /**
+     * É chamada assim que o componente é carregado
+     * Se um login foi salvo no localStorage loga automático
+     * Se não tiver, retorna todos os usuários para logar
+     */
     componentDidMount = () => {
         let user = localStorage.getItem('user')
         if(user !== null) {
@@ -35,6 +40,11 @@ class Login extends Component {
         }
     }
 
+    /**
+     * Cuida de alterar os inputs
+     * @param {event} e valor sendo alterado no input
+     * @return {state} altera o valor do state com o nome correspondente
+     */
     handleInput = e => {
         const { name, value } = e.target
         this.setState({
@@ -42,6 +52,11 @@ class Login extends Component {
         })
     }
 
+    /**
+     * É chamada assim que o botão de submit é clicado
+     * @param {event} e evento disparado ao submitt
+     * @return {state} loga na conta 
+     */
     handleSubmit = e => {
         e.preventDefault()
         this.state.users.forEach(user => {
@@ -54,7 +69,12 @@ class Login extends Component {
             }
         })
     }
-
+    
+    /**
+     * Cria um novo usuário com a username, email, password
+     * @param {event} e evento disparado no submit
+     * @return {state} cria um novo usuário
+     */
     createUser = e => {
         e.preventDefault()
 
@@ -79,6 +99,10 @@ class Login extends Component {
         })  
     }
 
+    /**
+     * Ao clicar um no usuário, autocompleta o input de username e mail
+     * @param {obj} obj usuário selecionado
+     */
     autoComplete = obj => {
         this.setState({
             nome: obj.username,
@@ -86,6 +110,10 @@ class Login extends Component {
         })
     }
 
+    /**
+     * Verifcia se a senha e a confirmação são iguais
+     * @return {boolean} true se forem diferentes e false se forem iguais
+     */
     passwordCorrect = () => {
         if(this.state.confirmaSenha === this.state.senha && this.state.senha.length > 0) {
             return false
@@ -93,6 +121,10 @@ class Login extends Component {
         return true
     }
 
+    /**
+     * Se selecionar login mostra os inputs de login e os usuários logados
+     * Se selecionar criar conta retorna a tela de criar conta
+     */
     render() {
         const {nome, email, senha, confirmaSenha } = this.state
         if(!this.props.functions.signin) {

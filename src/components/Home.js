@@ -10,8 +10,14 @@ import logo from '../assets/empty.svg'
 import { URL } from '../actions/Types'
 
 class Home extends Component {
+
+    /**
+     * Busca se o post selecionado já foi salvo
+     * Se foi salvo, remove da lista
+     * Se não foi salvo, adiciona na lista
+     * @param {object} obj recebe o post selecionado
+     */
     savePost = obj => {
-        console.log(obj)
         let isSaved
         if(this.props.functions.user.savedPosts) {
             isSaved = this.props.functions.user.savedPosts.some(post => {
@@ -25,6 +31,13 @@ class Home extends Component {
         }
     }
 
+    /**
+     * Busca se o post selecionado já foi salvo
+     * Se foi salvo, marca como verdadeiro
+     * Se não foi salvo marca como falso
+     * @param {object} obj recebe o post selecionado
+     * @returns {boolean}
+     */
     changeColor = (obj) => {
         let flag = false;
         if(this.props.functions.user.savedPosts) {
@@ -38,6 +51,11 @@ class Home extends Component {
         return flag
     }
 
+    /**
+     * Se algum artigo já retornou da busca
+     * faz um loop entre todos e mostra
+     * @returns {<li>} 
+     */
     renderResponse = () => {
         if(this.props.functions.response.length > 0) {
             return this.props.functions.response.map((obj, i) => {
@@ -69,12 +87,19 @@ class Home extends Component {
         }
     }
 
+    /**
+     * Carrega mais posts
+     */
     handler = () => {
         this.props.loadMore()
         console.log(this.props.functions.query)
         this.props.fetchApi(this.props.functions.query, this.props.functions.page + 1);
     }
 
+    /**
+     * Se está logado mostra as buscas
+     * Se não está logado retorna a tela de Login
+     */
     render() {
         if(this.props.functions.isLogged) {
             return (
