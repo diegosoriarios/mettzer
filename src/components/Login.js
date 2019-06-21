@@ -94,7 +94,7 @@ class Login extends Component {
 
     render() {
         const {nome, email, senha, confirmaSenha } = this.state
-        if(!this.props.signup.signin) {
+        if(!this.props.functions.signin) {
             return(
                 <div className="container">
                     <div className="row">
@@ -157,9 +157,7 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.pageIsLoading,
-        isLogged: state.userIsLogged,
-        signup: state.createAccount,
+        functions: state.getUserFunction,
     };
   };
   

@@ -30,13 +30,13 @@ class App extends Component {
               <span className="navbar-toggler-icon"></span>
             </button>
 
-            <div className={this.props.isLogged.isLogged ? "collapse navbar-collapse" : "d-none"} id="navbarSupportedContent">
+            <div className={this.props.functions.isLogged ? "collapse navbar-collapse" : "d-none"} id="navbarSupportedContent">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item active">
                   <Link to="/" className="nav-link">Home</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/users/" className="nav-link">{this.props.user.user.username}</Link>
+                  <Link to="/users/" className="nav-link">{this.props.functions.user.username}</Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/" className="nav-link" onClick={() => this.logOut()}>Log out</Link>
@@ -49,9 +49,9 @@ class App extends Component {
               </form>
             </div>
 
-            <div className={!this.props.isLogged.isLogged ? "collapse navbar-collapse" : "d-none"} id="navbarSupportedContent">
+            <div className={!this.props.functions.isLogged ? "collapse navbar-collapse" : "d-none"} id="navbarSupportedContent">
               <div className="text-right container-fluid">
-                <Link to="/" className="navbar-text nav-link" onClick={() => this.props.createAccount(!this.props.signin.signin) }>{this.props.signin.signin ? 'Login' : 'Criar conta'}</Link>
+                <Link to="/" className="navbar-text nav-link" onClick={() => this.props.createAccount(!this.props.functions.signin) }>{this.props.functions.signin ? 'Login' : 'Criar conta'}</Link>
               </div>
             </div>
           </nav>
@@ -66,13 +66,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-      isLoading: state.pageIsLoading,
-      isLogged: state.userIsLogged,
-      response: state.fetchSuccess,
-      page: state.loadMore,
-      query: state.changeString,
-      signin: state.createAccount,
-      user: state.saveUser
+      functions: state.getUserFunction,
   }
 }
 

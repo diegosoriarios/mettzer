@@ -17,7 +17,7 @@ class Users extends Component {
     }
 
     showSavedPosts = () => {
-        axios.get(`http://localhost:3777/users/${this.props.user.user._id}`)
+        axios.get(`http://localhost:3777/users/${this.props.functions.user._id}`)
             .then(response => {
                 return response.data
             })
@@ -29,7 +29,7 @@ class Users extends Component {
     }
 
     unSavePost = obj => {
-        axios.delete(`${URL}/users/${this.props.user.user._id}/savedPosts/${obj.id}`)
+        axios.delete(`${URL}/users/${this.props.functions.user._id}/savedPosts/${obj.id}`)
             .then(() => {
                 this.showSavedPosts()
             })
@@ -70,7 +70,7 @@ class Users extends Component {
     render() {
         return(
             <div className="container">
-                <ul style={{display: this.state.response.length > 0 ? 'block' : 'none'}}>
+                <ul style={{display: this.state.response && this.state.response.length > 0 ? 'block' : 'none'}}>
                     {this.renderResponse()}
                     <button onClick={() => this.handler()} className="bg-primary btn-more">+</button>
                 </ul>
@@ -81,12 +81,7 @@ class Users extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.pageIsLoading,
-        isLogged: state.userIsLogged,
-        response: state.fetchSuccess,
-        page: state.loadMore,
-        query: state.changeString,
-        user: state.saveUser
+        functions: state.getUserFunction,
     }
   }
   

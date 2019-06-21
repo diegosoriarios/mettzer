@@ -12,30 +12,35 @@ const URL = 'http://localhost:3777'
 class Home extends Component {
     savePost = obj => {
         console.log(obj)
-        let isSaved = this.props.user.user.savedPosts.some(post => {
-            return obj = post
-        })
+        let isSaved
+        if(this.props.functions.user.savedPosts) {
+            isSaved = this.props.functions.user.savedPosts.some(post => {
+                return obj = post
+            })
+        }
         if(isSaved) {
-            axios.delete(`${URL}/users/${this.props.user.user._id}`)
+            axios.delete(`${URL}/users/${this.props.functions.user._id}`)
         } else {
-            axios.put(`${URL}/users/${this.props.user.user._id}`, obj)
+            axios.put(`${URL}/users/${this.props.functions.user._id}`, obj)
         }
     }
 
     changeColor = (obj) => {
         let flag = false;
-        flag = this.props.user.user.savedPosts.find(list => {
-            if(list.id === obj.id) {
-                flag = true
-                return flag
-            }
-        })
+        if(this.props.functions.user.savedPosts) {
+            flag = this.props.functions.user.savedPosts.find(list => {
+                if(list.id === obj.id) {
+                    flag = true
+                    return flag
+                }
+            })
+        }
         return flag
     }
 
     renderResponse = () => {
-        if(this.props.response !== undefined) {
-            return this.props.response.response.map((obj, i) => {
+        if(this.props.functions.response !== undefined) {
+            return this.props.functions.response.map((obj, i) => {
                 return (
                     <li className="card" key={i} >
                         <div className="card-body">
@@ -66,15 +71,15 @@ class Home extends Component {
 
     handler = () => {
         this.props.loadMore()
-        console.log(this.props.query.query)
-        this.props.fetchApi(this.props.query.query, this.props.query.page + 1);
+        console.log(this.props.functions.query)
+        this.props.fetchApi(this.props.functions.query, this.props.functions.page + 1);
     }
 
     render() {
-        if(this.props.isLogged.isLogged) {
+        if(this.props.functions.isLogged) {
             return (
                 <div className="container">
-                    <ul style={{display: this.props.response.response.length > 0 ? 'block' : 'none'}}>
+                    <ul style={{display: this.props.functions.response.length > 0 ? 'block' : 'none'}}>
                         {this.renderResponse()}
                         <button onClick={() => this.handler()} className="bg-primary btn-more m-1">+</button>
                     </ul>
@@ -88,12 +93,7 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.pageIsLoading,
-        isLogged: state.userIsLogged,
-        response: state.fetchSuccess,
-        page: state.loadMore,
-        query: state.changeString,
-        user: state.saveUser
+        functions: state.getUserFunction,
     }
   }
   
