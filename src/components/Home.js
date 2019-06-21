@@ -7,8 +7,7 @@ import { connect } from 'react-redux'
 import { fetchApi, loadMore } from '../actions/Functions'
 import axios from 'axios'
 import logo from '../assets/empty.svg'
-
-const URL = 'http://localhost:3777'
+import { URL } from '../actions/Types'
 
 class Home extends Component {
     savePost = obj => {

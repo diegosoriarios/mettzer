@@ -4,8 +4,7 @@ import { fetchApi, loadMore } from '../actions/Functions'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
-
-const URL = 'http://localhost:3777'
+import { URL } from '../actions/Types'
 
 class Users extends Component {
     state = {
@@ -17,7 +16,7 @@ class Users extends Component {
     }
 
     showSavedPosts = () => {
-        axios.get(`http://localhost:3777/users/${this.props.functions.user._id}`)
+        axios.get(`${URL}/users/${this.props.functions.user._id}`)
             .then(response => {
                 return response.data
             })

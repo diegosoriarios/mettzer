@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { userIsLogged, saveUser } from '../actions/Functions'
 import axios from 'axios'
+import { URL } from '../actions/Types'
 
 class Login extends Component {
     constructor(props){
@@ -21,7 +22,7 @@ class Login extends Component {
             this.props.saveUser(JSON.parse(user))
             this.props.userIsLogged(true)
         } else {
-            axios.get('http://localhost:3777/users')
+            axios.get(`${URL}/users`)
             .then(response => {
                 return response.data
             })
