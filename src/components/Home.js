@@ -6,6 +6,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
 import { fetchApi, loadMore } from '../actions/Functions'
 import axios from 'axios'
+import logo from '../assets/empty.svg'
 
 const URL = 'http://localhost:3777'
 
@@ -39,10 +40,10 @@ class Home extends Component {
     }
 
     renderResponse = () => {
-        if(this.props.functions.response !== undefined) {
+        if(this.props.functions.response.length > 0) {
             return this.props.functions.response.map((obj, i) => {
                 return (
-                    <li className="card" key={i} >
+                    <li className="card text-left" key={i} >
                         <div className="card-body">
                             <div className="row">
                                 <h5 className="card-title col-md-9">{obj.title}</h5>
@@ -79,10 +80,16 @@ class Home extends Component {
         if(this.props.functions.isLogged) {
             return (
                 <div className="container">
-                    <ul style={{display: this.props.functions.response.length > 0 ? 'block' : 'none'}}>
+                    <ul style={{display: this.props.functions.response.length > 0 ? 'block' : 'none'}} className="text-center">
                         {this.renderResponse()}
-                        <button onClick={() => this.handler()} className="bg-primary btn-more m-1">+</button>
+                        <button onClick={() => this.handler()} className="text-center bg-primary btn-more m-2">+</button>
                     </ul>
+                    <div className="text-center mt-5"
+                        style={{display: !this.props.functions.response.length > 0 ? 'block' : 'none'}}>
+                            <h2>Nada para mostrar</h2>
+                            <h3>Faça uma pesquisa para começar</h3>
+                            <img src={logo} className="txt-center w-50 m-5 img-fluid" alt="search" />
+                    </div>
                 </div>
             )
         }else {

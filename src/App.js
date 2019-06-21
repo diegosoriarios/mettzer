@@ -36,10 +36,10 @@ class App extends Component {
                   <Link to="/" className="nav-link">Home</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/users/" className="nav-link">{this.props.functions.user.username}</Link>
+                  <Link to="/users/" className="nav-link text-capitalize">{this.props.functions.user.username}</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/" className="nav-link" onClick={() => this.logOut()}>Log out</Link>
+                  <Link to="/" className="nav-link" onClick={() => this.logOut()}>Sair</Link>
                 </li>
               </ul>
               <form className="form-inline my-2 my-lg-0" onSubmit={this.handleForm.bind(this)}>
