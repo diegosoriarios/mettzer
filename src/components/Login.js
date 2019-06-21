@@ -10,6 +10,7 @@ class Login extends Component {
             nome: '',
             email: '',
             senha: '',
+            confirmaSenha: '',
             users: [],
         }
     }
@@ -74,30 +75,57 @@ class Login extends Component {
         })
         .catch(err => {
             console.err(err)
+        })  
+    }
+
+    autoComplete = obj => {
+        this.setState({
+            nome: obj.username,
+            email: obj.email,
         })
     }
 
+    passwordCorrect = () => {
+        if(this.state.confirmaSenha === this.state.senha && this.state.senha.length > 0) {
+            return false
+        }
+        return true
+    }
+
     render() {
-        const {nome, email, senha} = this.state
+        const {nome, email, senha, confirmaSenha } = this.state
         if(!this.props.signup.signin) {
             return(
-                <form onSubmit={this.handleSubmit} className="container">
-                    <h2 className="text-center m-3">Login</h2>
-                    <div className="form-group">
-                        <label htmlFor="exampleInputUsername">Username</label>
-                        <input type="text" className="form-control" id="exampleInputUsername" placeholder="Username" name="nome" value={nome} onChange={this.handleInput} />
+                <div className="container">
+                    <div className="row">
+                        <form onSubmit={this.handleSubmit} className="col-sm-6">
+                            <h2 className="text-center m-3">Login</h2>
+                            <div className="form-group">
+                                <label htmlFor="exampleInputUsername">Username</label>
+                                <input type="text" className="form-control" id="exampleInputUsername" placeholder="Username" name="nome" value={nome} onChange={this.handleInput} />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInputEmail1">Email</label>
+                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" value={email} onChange={this.handleInput} />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="senha">Senha</label>
+                                <input type="password" className="form-control" id="senha" placeholder="Senha" name="senha" value={senha} onChange={this.handleInput} />
+                            </div>
+                            <button type="submit" className="btn btn-primary">Login</button>
+                        </form>
+                        <div className=" col-6">
+                            <h2 className="text-center m-3">Users</h2>
+                        
+                            <ul className="list-group text-center m-5">
+                            
+                                {this.state.users.map((user, i) => (
+                                    <li key={i} className="list-group-item text-capitalize" onClick={() => this.autoComplete(user)}>{user.username}</li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">Email</label>
-                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" value={email} onChange={this.handleInput} />
-                        <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Senha</label>
-                        <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Senha" name="senha" value={senha} onChange={this.handleInput} />
-                    </div>
-                    <button type="submit" className="btn btn-primary">Login</button>
-                </form>
+                </div>
             );
         } else {
             return(
@@ -105,18 +133,22 @@ class Login extends Component {
                     <h2 className="text-center m-3">Criar conta</h2>
                     <div className="form-group">
                         <label htmlFor="exampleInputUsername">Username</label>
-                        <input type="text" className="form-control" id="exampleInputUsername" placeholder="Username" value={nome} onChange={this.handleInput} />
+                        <input type="text" className="form-control" id="exampleInputUsername" placeholder="Username" name="nome" value={nome} onChange={this.handleInput} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="exampleInputEmail1">Email</label>
-                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" value={email} onChange={this.handleInput} />
-                        <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="email" value={email} onChange={this.handleInput} />
+                        <small id="emailHelp" className="form-text text-muted">Não vamos compartilhar o seu e-mail com ninguém</small>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleInputPassword1">Senha</label>
-                        <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Senha" value={senha} onChange={this.handleInput} />
+                        <label htmlFor="senha">Senha</label>
+                        <input type="password" className="form-control" id="senha" placeholder="Senha" name="senha" value={senha} onChange={this.handleInput} />
                     </div>
-                    <button type="submit" className="btn btn-primary">Criar conta</button>
+                    <div className="form-group">
+                        <label htmlFor="confirmaSenha">Confirma Senha</label>
+                        <input type="password" className="form-control" id="confirmaSenha" placeholder="Confirma Senha" name="confirmaSenha" value={confirmaSenha} onChange={this.handleInput} />
+                    </div>
+                    <button type="submit" className="btn btn-primary" disabled={this.passwordCorrect()}>Criar conta</button>
                 </form>
             );
         }
