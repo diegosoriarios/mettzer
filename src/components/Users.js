@@ -11,10 +11,16 @@ class Users extends Component {
         response: []
     }
 
+    /**
+     * Assim que o componente é carregado atualiza a lista de posts mostrados
+     */
     componentDidMount = () => {
         this.showSavedPosts()
     }
 
+    /**
+     * Faz a request e armazenas os dados de um usuário
+     */
     showSavedPosts = () => {
         axios.get(`${URL}/users/${this.props.functions.user._id}`)
             .then(response => {
@@ -27,6 +33,10 @@ class Users extends Component {
             })
     }
 
+    /**
+     * Remove artigo da lista dos artigos favoritos
+     * @param {obj} obj artigo selecionado
+     */
     unSavePost = obj => {
         axios.delete(`${URL}/users/${this.props.functions.user._id}/savedPosts/${obj.id}`)
             .then(() => {
@@ -34,6 +44,9 @@ class Users extends Component {
             })
     }
 
+    /**
+     * Renderiza todos os artigos salvo dos usuários
+     */
     renderResponse = () => {
         console.log(this.state.response)
         if(this.state.response !== undefined) {
@@ -66,6 +79,9 @@ class Users extends Component {
         }
     }
     
+    /**
+     * Renderiz a lista de artigos se tiver no minimo um artigo
+     */
     render() {
         return(
             <div className="container">

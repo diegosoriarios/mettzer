@@ -10,16 +10,27 @@ class App extends Component {
     pesquisa: '',
   }
 
+  /**
+   * Faz a busca dos artigos sobre o tema escolhido
+   * @param {event} e evento disparado quando submit o form
+   * @return pesquisa
+   */
   handleForm = e => {
     e.preventDefault()
     this.props.fetchApi(this.state.pesquisa, 1)
   }
 
+  /**
+   * Faz o logout da conta do usuário
+   */
   logOut = () => {
     localStorage.clear()
     this.props.userIsLogged(false)
   }
 
+  /**
+   * Adiciona o react-router e a nav bar
+   */
   render() {
     return (
       <Router>
