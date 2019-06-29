@@ -20,6 +20,7 @@ let database, collection
  * Retorna todos os usuários cadastrados
  */
 app.get('/users', (req, res) => {
+    console.log("GET")
     collection.find({}).toArray((err, result) => {
         if(err){
             return res.status(500).send(err)
@@ -32,7 +33,7 @@ app.get('/users', (req, res) => {
  * Cadastra novos usuários no banco de dados
  */
 app.post('/users', (req, res) => {
-    console.log(res)
+    console.log("CREATE_USER")
     collection.insertOne(req.body, (err, result) => {
         if(err){
             return res.status(500).send(err)
@@ -45,7 +46,7 @@ app.post('/users', (req, res) => {
  * Salva um novo post na conta
  */
 app.put('/users/:id', (req, res) => {
-    console.log(req.body)
+    console.log("SAVE_POST")
     const body = {
         id: req.body.id,
         authors: req.body.authors,
@@ -71,7 +72,6 @@ app.put('/users/:id', (req, res) => {
  * Remove um post salvo da conta
  */
 app.delete('/users/:id/savedPosts/:post', (req, res) => {
-    console.log(req.params)
     collection.updateOne({ _id: objectId(req.params.id)}, {$pull: { savedPosts: {id: req.params.post}}}, (err, result) => {
         if (err) {
             return res.status(500).send(err)
@@ -84,6 +84,7 @@ app.delete('/users/:id/savedPosts/:post', (req, res) => {
  * Retorna todos os posts de um determinado usuário
  */
 app.get('/users/:id', (req, res) => {
+    console.log("GET_USER")
     collection.findOne({ _id: new objectId(req.params.id) }, (err, result) => {
         if(err){
             return res.status(500).send(err)

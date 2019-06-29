@@ -4,7 +4,7 @@ import '../App.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
-import { fetchApi, loadMore } from '../actions/Functions'
+import { fetchApi, loadMore, saveUser } from '../actions/Functions'
 import axios from 'axios'
 import logo from '../assets/empty.svg'
 import { URL } from '../actions/Types'
@@ -12,9 +12,7 @@ import { URL } from '../actions/Types'
 class Home extends Component {
 
     /**
-     * Busca se o post selecionado já foi salvo
-     * Se foi salvo, remove da lista
-     * Se não foi salvo, adiciona na lista
+     * Busca entre todos os posts salvos
      * @param {object} obj recebe o post selecionado
      */
     savePost = obj => {
@@ -24,12 +22,44 @@ class Home extends Component {
                 return obj.id === post.id
             })
         }
-        if(isSaved === obj.id) {
-            axios.delete(`${URL}/users/${this.props.functions.user._id}`)
+        this.changeStatus(isSaved && isSaved.id === obj.id, obj)
+    }
+
+    /**
+     * Busca se o post selecionado já foi salvo
+     * Se foi salvo, remove da lista
+     * Se não foi salvo, adiciona na lista
+     * @param {object} obj recebe o post selecionado
+     */
+    changeStatus = (isSaved, obj) => {
+        if(isSaved) {
+            console.log("Delete")
+            if(this.props.functions.user._id) {
+                axios.delete(`${URL}/users/${this.props.functions.user._id}/savedPosts/${obj.id}`)
+                    .then(() => this.updateLocalStorage())
+                    .catch(err => console.log(err))
+            } else {
+                console.log('User not found')
+            }
         } else {
+            console.log("Add")
             axios.put(`${URL}/users/${this.props.functions.user._id}`, obj)
+                .then(() => this.updateLocalStorage())
+                .catch(err => console.log(err))
         }
-        this.renderResponse()
+    }
+
+    updateLocalStorage = user => {
+        axios.get(`${URL}/users/${this.props.functions.user._id}`)
+            .then(response => {
+                return response.data
+            })
+            .then(response => {
+                this.props.saveUser(response)
+                this.renderResponse()
+                localStorage.removeItem('user')
+                localStorage.setItem('user', JSON.stringify(response))
+            })
     }
 
     /**
@@ -133,6 +163,7 @@ const mapStateToProps = (state) => {
     return {
         fetchApi: (query, page) => dispatch(fetchApi(query, page)),
         loadMore: (pages) => dispatch(loadMore(pages)),
+        saveUser: (user) => dispatch(saveUser(user))
     }
   }
   

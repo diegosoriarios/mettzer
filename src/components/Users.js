@@ -22,7 +22,8 @@ class Users extends Component {
      * Faz a request e armazenas os dados de um usuário
      */
     showSavedPosts = () => {
-        axios.get(`${URL}/users/${this.props.functions.user._id}`)
+        if(this.props.functions.user._id) {
+            axios.get(`${URL}/users/${this.props.functions.user._id}`)
             .then(response => {
                 return response.data
             })
@@ -30,7 +31,10 @@ class Users extends Component {
                 this.setState({
                     response: response.savedPosts
                 })
+                localStorage.removeItem('user')
+                localStorage.setItem('user', JSON.stringify(response))
             })
+        }        
     }
 
     /**
@@ -87,7 +91,6 @@ class Users extends Component {
             <div className="container">
                 <ul style={{display: this.state.response && this.state.response.length > 0 ? 'block' : 'none'}}>
                     {this.renderResponse()}
-                    <button onClick={() => this.handler()} className="bg-primary btn-more">+</button>
                 </ul>
             </div>
         );
