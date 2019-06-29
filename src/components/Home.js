@@ -20,15 +20,16 @@ class Home extends Component {
     savePost = obj => {
         let isSaved
         if(this.props.functions.user.savedPosts) {
-            isSaved = this.props.functions.user.savedPosts.some(post => {
-                return obj = post
+            isSaved = this.props.functions.user.savedPosts.find(post => {
+                return obj.id === post.id
             })
         }
-        if(isSaved) {
+        if(isSaved === obj.id) {
             axios.delete(`${URL}/users/${this.props.functions.user._id}`)
         } else {
             axios.put(`${URL}/users/${this.props.functions.user._id}`, obj)
         }
+        this.renderResponse()
     }
 
     /**
